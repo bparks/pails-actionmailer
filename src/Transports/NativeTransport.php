@@ -16,11 +16,15 @@ class NativeTransport implements ITransport
         $options = $this->options;
         if ($message->getFrom() != '')
             $options = array_merge($options, ['From' => $message->getFrom()]);
+        $options = array_merge($options, ['Content-Type' => $message->getContentTypeHeader()]);
         $headers = implode("\r\n", array_map(function ($key, $value) { return $key.': '.$value; },
             array_keys($options),
             array_values($options)
         ));
-        $body = '';
-        mail($message->to, $message->subject, $body, $headers);
+        $body = $message->render();
+        $to = $message->getTo();
+        if (is_array($to))
+            $to = implode(", ", $to);
+        mail($message->getTo(), $message->getSubject(), $body, $headers);
     }
 }

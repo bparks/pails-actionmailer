@@ -14,8 +14,13 @@ class Mailer
     public static function __callStatic($name, $args)
     {
         $mailer = new static();
-        $mailer->view = get_class($mailer).'/'.$name;
-        call_user_func_array([$mailer, $name], $args);
+        $mailer->view = self::directoryName(get_class($mailer)).'/'.$name;
+        return call_user_func_array([$mailer, $name], $args);
+    }
+
+    private static function directoryName($classname)
+    {
+        return strtolower(preg_replace('/(.)([A-Z])/e', "'$1_$2'", $classname));
     }
 
     public static function setTransport($classname, $options)
