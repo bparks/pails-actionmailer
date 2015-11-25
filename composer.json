@@ -2,7 +2,7 @@
 	"name": "pails/actionmailer",
 	"autoload": {
 		"psr-4": {
-            "Pails\\ActionMailer": "src"
+            "Pails\\ActionMailer\\": "src"
         }
 	},
     "repositories": [
