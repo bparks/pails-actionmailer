@@ -32,8 +32,8 @@ class SendgridTransport implements ITransport
 
     public function deliver($message)
     {
-        $sendgrid = new SendGrid($this->username, $this->password, $this->options);
-		$email = new SendGrid\Email;
+        $sendgrid = new \SendGrid($this->username, $this->password, $this->options);
+		$email = new \SendGrid\Email;
 
         $to = $message->getTo();
         if (is_array($to))
