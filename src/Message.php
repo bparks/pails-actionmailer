@@ -38,12 +38,12 @@ class Message
 
     public function getContentTypeHeader()
     {
-        $html_path = 'views/'.$this->view.'.html.php';
-        $text_path = 'views/'.$this->view.'.text.php';
+        $html_path = Mailer::pathFor($this->view.'.html.php');
+        $text_path = Mailer::pathFor($this->view.'.text.php');
 
-        if (file_exists($html_path))
+        if ($html_path != null && file_exists($html_path))
         {
-            if (file_exists($text_path))
+            if ($text_path != null && file_exists($text_path))
             {
                 return "multipart/alternative;boundary=----mail-boundary----";
             }
@@ -81,14 +81,14 @@ class Message
 
     public function renderHtml()
     {
-        $html_path = 'views/'.$this->view.'.html.php';
+        $html_path = Mailer::pathFor($this->view.'.html.php');
         return $this->renderPath($html_path);
     }
 
     public function renderText()
     {
-        $html_path = 'views/'.$this->view.'.text.php';
-        return $this->renderPath($html_path);
+        $text_path = Mailer::pathFor($this->view.'.text.php');
+        return $this->renderPath($text_path);
     }
 
     private function renderPath($path)

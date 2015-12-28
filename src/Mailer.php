@@ -10,6 +10,7 @@ class Mailer
 
     private static $transport_name;
     private static $transport_options;
+    private static $mailer_view_dirs = array('views');
 
     public static function __callStatic($name, $args)
     {
@@ -27,6 +28,23 @@ class Mailer
     {
         self::$transport_name = $classname;
         self::$transport_options = $options;
+    }
+
+    public static function useForMailerViews($path)
+    {
+        self::$mailer_view_dirs[] = $path;
+    }
+
+    public static function pathFor($filename)
+    {
+        $path = null;
+        $i = 0;
+        do {
+            if ($i >= count(self::$mailer_view_dirs))
+                return null;
+            $path = self::$mailer_view_dirs[$i] . '/' . $filename;
+        } while (!file_exists($path));
+        return $path;
     }
 
     protected function mail($to, $subject, $view = null)
