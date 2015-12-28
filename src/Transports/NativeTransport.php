@@ -21,7 +21,7 @@ class NativeTransport implements ITransport
             array_keys($options),
             array_values($options)
         ));
-        $body = $message->render();
+        $body = $message->renderMessage();
         $to = $message->getTo();
         if (is_array($to))
             $to = implode(", ", $to);

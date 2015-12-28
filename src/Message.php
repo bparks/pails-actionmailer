@@ -4,15 +4,16 @@ namespace Pails\ActionMailer;
 
 class Message
 {
-    private $to, $from, $subject, $view;
+    private $to, $from, $subject, $view, $layout;
     private $transport;
 
-    public function __construct($to, $from, $subject, $view, $transport)
+    public function __construct($to, $from, $subject, $view, $layout, $transport)
     {
         $this->to = $to;
         $this->from = $from;
         $this->subject = $subject;
         $this->view = $view;
+        $this->layout = $layout;
         $this->transport = $transport;
     }
 
@@ -52,7 +53,7 @@ class Message
         return "text/plain";
     }
 
-    public function render()
+    public function renderMessage()
     {
         $html = $this->renderHtml();
         $text = $this->renderText();
@@ -81,8 +82,13 @@ class Message
 
     public function renderHtml()
     {
-        $html_path = Mailer::pathFor($this->view.'.html.php');
-        return $this->renderPath($html_path);
+        if ($this->layout == null || Mailer::pathFor($this->layout.'.php') == null) {
+            $html_path = Mailer::pathFor($this->view.'.html.php');
+            return $this->renderPath($html_path);
+        } else {
+            $layout_path = Mailer::pathFor($this->layout.'.php');
+            return $this->renderPath($layout_path);
+        }
     }
 
     public function renderText()
@@ -101,5 +107,26 @@ class Message
         $str = ob_get_contents();
         ob_end_clean();
         return $str;
+    }
+
+    //These two functions below operate in "output space" -- they are called from
+    //within an HTML/text context
+    private function render()
+    {
+        include Mailer::pathFor($this->view.'.html.php');
+    }
+
+    private function renderPartial($path, $local_model = null)
+    {
+        $model = $local_model != null ? $local_model : null;
+        include Mailer::pathFor($path.'.html.php');
+    }
+
+    private function render_partial($path, $local_model = null)
+    {
+        //This method exists solely for compatibility with the non-standard naming
+        //in pails controllers. If you're using a layout for mailers ONLY, please
+        //use `renderPartial`.
+        $this->renderPartial($path, $local_model);
     }
 }
