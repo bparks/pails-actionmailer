@@ -56,8 +56,16 @@ class Mailer
         self::$default_layout = $layout;
     }
 
-    protected function mail($to, $subject, $view = null, $layout = null)
+    protected function mail($to, $subject, $view = null, $layout = null, $model = null)
     {
+        if ($view != null && !is_string($view) && $layout == null) {
+            $model = $view;
+            $view = null;
+        }
+        if ($layout != null && !is_string($layout) && $model == null) {
+            $model = $layout;
+            $layout = null;
+        }
         if ($view == null || trim($view) == '')
             $view = $this->view;
         if ($layout == null || trim($layout) == '')
@@ -67,6 +75,6 @@ class Mailer
             self::$transport_name = "\\Pails\\ActionMailer\\Transports\\NativeTransport";
             self::$transport_options = array();
         }
-        return new Message($to, self::$from, $subject, $view, $layout, new self::$transport_name(self::$transport_options));
+        return new Message($to, self::$from, $subject, $view, $layout, $model, new self::$transport_name(self::$transport_options));
     }
 }

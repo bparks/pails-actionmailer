@@ -5,15 +5,16 @@ namespace Pails\ActionMailer;
 class Message
 {
     private $to, $from, $subject, $view, $layout;
-    private $transport;
+    private $model, $transport;
 
-    public function __construct($to, $from, $subject, $view, $layout, $transport)
+    public function __construct($to, $from, $subject, $view, $layout, $model, $transport)
     {
         $this->to = $to;
         $this->from = $from;
         $this->subject = $subject;
         $this->view = $view;
         $this->layout = $layout;
+        $this->model = $model;
         $this->transport = $transport;
     }
 
@@ -118,7 +119,7 @@ class Message
 
     private function renderPartial($path, $local_model = null)
     {
-        $model = $local_model != null ? $local_model : null;
+        $model = $local_model != null ? $local_model : $this->model;
         include Mailer::pathFor($path.'.html.php');
     }
 
