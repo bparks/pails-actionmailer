@@ -13,6 +13,6 @@
     ],
 	"require": {
 		"pails/pails": "^1.0",
-		"php-activerecord/php-activerecord": "dev-develop"
+		"pails/activerecord": "^1.2"
 	}
 }

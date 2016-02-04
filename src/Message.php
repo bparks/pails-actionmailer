@@ -114,7 +114,10 @@ class Message
     //within an HTML/text context
     private function render()
     {
-        include Mailer::pathFor($this->view.'.html.php');
+        $path = Mailer::pathFor($this->view.'.html.php');
+        if ($path == null)
+            throw new \Exception("Unable to find template for path '".$this->view."'");
+        include $path;
     }
 
     private function renderPartial($path, $local_model = null)
