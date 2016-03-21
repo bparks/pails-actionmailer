@@ -24,7 +24,9 @@ class Mailer
 
     private static function directoryName($classname)
     {
-        return strtolower(preg_replace('/(.)([A-Z])/e', "'$1_$2'", $classname));
+        return strtolower(preg_replace_callback('/(.)([A-Z])/', function ($m) {
+            return $m[1] . '_' . $m[2];
+        }, $classname));
     }
 
     public static function setTransport($classname, $options)
