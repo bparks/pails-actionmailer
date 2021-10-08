@@ -32,8 +32,10 @@ class SendgridTransport implements ITransport
 
     public function deliver($message)
     {
-        $sendgrid = new \SendGrid($this->username, $this->password, $this->options);
-        $email = new \SendGrid\Email;
+        $sendgrid = $this->username == "apikey"
+            ? new \SendGrid($this->password, $this->options)
+            : new \SendGrid($this->username, $this->password, $this->options);
+        $email = new \SendGrid\Mail\Mail;
 
         $to = $message->getTo();
         if (is_array($to))
@@ -46,13 +48,10 @@ class SendgridTransport implements ITransport
             $email->addTo($to);
         }
 
-        $email
-            ->setFrom($this->from)
-            ->setFromName($this->from_name)
-            ->setSubject($message->getSubject())
-            ->setText($message->renderText())
-            ->setHtml($message->renderHtml())
-        ;
+        $email->setFrom($this->from, $this->from_name);
+        $email->setSubject($message->getSubject());
+        $email->addContent('text/plain', $message->renderText());
+        $email->addContent('text/html', $message->renderHtml());
 
         $sendgrid->send($email);
     }
