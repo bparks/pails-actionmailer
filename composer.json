@@ -1,18 +1,21 @@
 {
-	"name": "pails/actionmailer",
-	"autoload": {
-		"psr-4": {
+    "name": "pails/actionmailer",
+    "autoload": {
+        "psr-4": {
             "Pails\\ActionMailer\\": "src"
         }
-	},
+    },
     "repositories": [
         {
             "type": "vcs",
             "url": "https://github.com/bparks/php-activerecord"
         }
     ],
-	"require": {
-		"pails/pails": "^1.0",
-		"pails/activerecord": "^1.2"
-	}
+    "require": {
+        "pails/pails": "^1.0",
+        "pails/activerecord": "^1.2"
+    },
+    "suggest": {
+        "sendgrid/sendgrid": "~7"
+    }
 }
