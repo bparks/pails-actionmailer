@@ -16,6 +16,7 @@
         "pails/activerecord": "^1.2"
     },
     "suggest": {
-        "sendgrid/sendgrid": "~7"
+        "sendgrid/sendgrid": "~7",
+        "mailersend/mailersend": "^0.4.0"
     }
 }
