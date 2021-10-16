@@ -1,9 +1,9 @@
 <?php
+namespace Pails\ActionMailer\Transports;
+
 use MailerSend\MailerSend;
 use MailerSend\Helpers\Builder\Recipient;
 use MailerSend\Helpers\Builder\EmailParams;
-
-namespace Pails\ActionMailer\Transports;
 
 class MailersendTransport implements ITransport
 {
