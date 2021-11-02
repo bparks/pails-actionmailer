@@ -38,11 +38,11 @@ class MailersendTransport implements ITransport
         if (is_array($to))
         {
             foreach ($to as $rcpt)
-                $recipients[] = new Recipient($rcpt);
+                $recipients[] = new Recipient($rcpt, $rcpt);
         }
         else
         {
-            $recipients[] = new Recipient($to);
+            $recipients[] = new Recipient($to, $to);
         }
 
         $emailParams = (new EmailParams())
